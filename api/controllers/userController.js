@@ -12,7 +12,7 @@ exports.authenticate = function (req, res) {
         if (!user) {
             res.json({
                 success: false,
-                message: "ms-01"
+                message: "usuário não encontrado"
             })
         }
         else {
@@ -27,7 +27,7 @@ exports.authenticate = function (req, res) {
 
             res.json({
                 success: true,
-                message: "ms-02",
+                message: "usuário autenticado com sucesso",
                 token: token
             });
         }

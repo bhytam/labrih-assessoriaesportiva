@@ -12,9 +12,9 @@ module.exports = function (app) {
         if (token) {
             jwt.verify(token, app.get('JwtSecret'), function (err, decoded) {
                 if (err) {
-                    return res.json({ 
-                        success: false, 
-                        message: 'ms-02' 
+                    return res.status(403).send({
+                        success: false,
+                        message: "token inválido"
                     });
                 } else {
                     req.decoded = decoded;
@@ -24,7 +24,7 @@ module.exports = function (app) {
         } else {
             return res.status(403).send({
                 success: false,
-                message: 'ms-03'
+                message: "token não informado"
             });
         }
     });
