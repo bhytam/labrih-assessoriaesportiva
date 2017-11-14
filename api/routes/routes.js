@@ -2,7 +2,9 @@
 
 module.exports = function (app) {
     var userController = require("../controllers/userController"),
+        runnerController = require("../controllers/runnerController"),
         jwt = require("jsonwebtoken");
+
     app.route("/authenticate").post(userController.authenticate);
 
     app.use(function (req, res, next) {
@@ -19,7 +21,6 @@ module.exports = function (app) {
                     next();
                 }
             });
-
         } else {
             return res.status(403).send({
                 success: false,
@@ -28,7 +29,6 @@ module.exports = function (app) {
         }
     });
 
-    app.route('/teste').get(function (req, res) {
-        res.json({ success: true, data: req.decoded })
-    });
+    app.route('/runners')
+        .post(runnerController.add);
 }

@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 
 mongoose.connect(config.base, { useMongoClient: true });
 
-var User = require("./api/models/user");
+var User = require("./api/models/user"),
+    Runner = require("./api/models/runner");
 
 var routes = require('./api/routes/routes'); 
 routes(app); 
