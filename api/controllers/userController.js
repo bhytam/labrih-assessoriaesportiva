@@ -26,11 +26,7 @@ exports.authenticate = function (req, res) {
                 expiresIn: 1440
             });
 
-            res.json({
-                success: true,
-                message: "usuário autenticado com sucesso",
-                token: token
-            });
+            res.send(token);
         }
     });
 }

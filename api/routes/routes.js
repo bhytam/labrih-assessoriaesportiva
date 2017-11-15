@@ -30,6 +30,9 @@ module.exports = function (app) {
     });
 
     app.route('/runners')
-        .post(runnerController.add)
+        .post(runnerController.post)
         .get(runnerController.list);
+
+    app.route('/runners/:runner_id')
+        .put(runnerController.put);
 }
