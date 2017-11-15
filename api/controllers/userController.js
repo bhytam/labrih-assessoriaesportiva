@@ -9,7 +9,13 @@ exports.authenticate = function (req, res) {
         email: req.body.email,
         password: req.body.password
     }, function (err, user) {
-        if (!user) {
+        if (err) {
+            res.status(500).send({
+                success: false,
+                message: "erro interno",
+                data: err
+            })
+        } else if (!user) {
             res.json({
                 success: false,
                 message: "usuário não encontrado"
