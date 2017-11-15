@@ -1,38 +1,19 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.Types.ObjectId;
+    Schema = mongoose.Schema;
 
-module.exports = mongoose.model("Runner", new Schema({
-    cellphone: {
-        type: String,
-        require: "qual o telefone?",
-        unique: true,
-        validate: {
-            validator: function (v) {
-                var re = /^\d{11}$/;
-                return (v == null || v.trim().length < 1) || re.test(v);
-            },
-            message: "telefone inválido"
-        }
-    },
+var runnerSchema = Schema({
+    cellphone: String,
+    name: String,
+    email: String,
+    advisor: Schema.Types.ObjectId,
     created_at: {
         type: Date,
         default: Date.now
-    },
-    advisors: [{
-        name: {
-            type: String,
-            require: "entre com o nome"
-        },
-        email: {
-            type: String,
-            require: "entre com o e-mail"
-        },
-        advisor: {
-            type: ObjectId,
-            require: "qual a assessoria?"
-        }
-    }]
-}));
+    }
+});
+
+runnerSchema.index({ advisor: 1, cellphone: 1 }, { unique: true });
+
+module.exports = mongoose.model("Runner", runnerSchema);
