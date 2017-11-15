@@ -17,7 +17,8 @@ exports.authenticate = function (req, res) {
         }
         else {
             const payload = {
-                id: user._id
+                id: user._id,
+                name: user.name
             };
             const secret = req.app.get('JwtSecret');
 

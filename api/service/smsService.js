@@ -17,6 +17,8 @@ var SmsService = {
             }
         };
 
+        console.log(args);
+
         soap.createClient('http://54.173.24.177/painel/ServiceSms.asmx?wsdl',
             function (err, client) {
                 client.SendSMS(args, function (err, result) {

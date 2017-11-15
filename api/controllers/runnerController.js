@@ -52,7 +52,7 @@ exports.add = function (req, res) {
                     else {
                         smsService.sendSms({
                             Number: runner.cellphone,
-                            Message: "Olá " + req.body.name + "! X está te chamando para correr. Acesse Y"
+                            Message: "Olá " + req.body.name + "! "+ req.decoded.name +" está te chamando para correr. Acesse Y"
                         });
 
                         res.status(200).json({

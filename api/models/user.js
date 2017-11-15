@@ -12,5 +12,8 @@ module.exports = mongoose.model("User", new Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+    name: {
+        type: String
     }
 }));
