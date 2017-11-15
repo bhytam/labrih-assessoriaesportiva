@@ -2,13 +2,13 @@
 
 var mongoose = require('mongoose'),
     Runner = mongoose.model('Runner'),
+    smsService = require("../service/smsService"),
     ObjectId = mongoose.Types.ObjectId;
 
 exports.list = function (req, res) {
     var advisorObjectId = ObjectId(req.decoded.id);
     Runner.find(
         { "advisors.advisor": advisorObjectId },
-        { _id: 1, cellphone: 1, advisors: { $elemMatch: { advisor: advisorObjectId } } },
         function (err, runners) {
             if (err) {
                 console.log(err);
@@ -20,7 +20,9 @@ exports.list = function (req, res) {
             else
                 res.status(200).send({
                     success: true,
-                    data: runners
+                    data: runners.map(function(o){
+                        return { cellphone: o.cellphone, name: o.advisors[0].name, id: o.id }
+                    })
                 })
         });
 }
@@ -48,6 +50,11 @@ exports.add = function (req, res) {
                         })
                     }
                     else {
+                        smsService.sendSms({
+                            Number: runner.cellphone,
+                            Message: "Olá " + req.body.name + "! X está te chamando para correr. Acesse Y"
+                        });
+
                         res.status(200).json({
                             success: true,
                             message: "inserido com sucesso"
