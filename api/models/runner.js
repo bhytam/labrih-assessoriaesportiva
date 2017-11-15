@@ -21,10 +21,14 @@ module.exports = mongoose.model("Runner", new Schema({
         type: Date,
         default: Date.now
     },
-    advisors: [{ 
+    advisors: [{
         name: {
             type: String,
             require: "entre com o nome"
+        },
+        email: {
+            type: String,
+            require: "entre com o e-mail"
         },
         advisor: {
             type: ObjectId,

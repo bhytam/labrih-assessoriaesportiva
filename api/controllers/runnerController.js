@@ -2,7 +2,28 @@
 
 var mongoose = require('mongoose'),
     Runner = mongoose.model('Runner'),
-    ObjectId = mongoose.Schema.Types.ObjectId;
+    ObjectId = mongoose.Types.ObjectId;
+
+exports.list = function (req, res) {
+    var advisorObjectId = ObjectId(req.decoded.id);
+    Runner.find(
+        { "advisors.advisor": advisorObjectId },
+        { _id: 1, cellphone: 1, advisors: { $elemMatch: { advisor: advisorObjectId } } },
+        function (err, runners) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({
+                    success: false,
+                    message: "erro interno"
+                })
+            }
+            else
+                res.status(200).send({
+                    success: true,
+                    data: runners
+                })
+        });
+}
 
 exports.add = function (req, res) {
     var advisorObjectId = ObjectId(req.decoded.id);
@@ -35,7 +56,7 @@ exports.add = function (req, res) {
                 });
             }
             else {
-                if (!runner.advisors.find(o => o.advisor == advisorObjectId)) {
+                if (!runner.advisors.find(o => o.advisor === advisorObjectId)) {
                     runner.advisors.push({
                         name: req.body.name,
                         advisor: advisorObjectId

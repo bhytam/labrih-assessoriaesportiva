@@ -30,5 +30,6 @@ module.exports = function (app) {
     });
 
     app.route('/runners')
-        .post(runnerController.add);
+        .post(runnerController.add)
+        .get(runnerController.list);
 }
