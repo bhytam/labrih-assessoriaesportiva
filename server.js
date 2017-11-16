@@ -33,4 +33,4 @@ app.listen(port, function () {
   });
 });
 
-console.log("ok")
+console.log(port)
