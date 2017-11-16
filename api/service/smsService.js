@@ -4,8 +4,8 @@ var SmsService = {
 
     sendSms: function (smsMessage) {
         var args = {
-            User: "85999981112",
-            Pwd: "753272",
+            User: process.env.SMS_USER,
+            Pwd: process.env.SMS_PWD,
             SmsMessage: {
                 Subject: "Runner - " + smsMessage.Number,
                 Msg: smsMessage.Message,
