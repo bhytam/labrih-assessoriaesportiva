@@ -25,6 +25,7 @@ exports.list = function (req, res) {
 exports.put = function (req, res) {
     delete req.advisor;
     delete req._id;
+    delete req.created_at;
 
     Runner.update({
         advisor: req.decoded.id,
