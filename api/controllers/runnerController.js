@@ -23,18 +23,29 @@ exports.list = function (req, res) {
 }
 
 exports.put = function (req, res) {
+    delete req.advisor;
+    delete req._id;
+
     Runner.update({
         advisor: req.decoded.id,
         _id: req.params.runner_id
     }, req.body, {
             multi: false
         }, function (err, rows) {
-            if (err)
-                res.status(500).send({
-                    success: false,
-                    message: "erro interno",
-                    data: err
-                });
+            if (err) {
+                if (err.code == 11000)
+                    res.status(500).send({
+                        success: false,
+                        message: "este telefone já está em uso",
+                        data: err
+                    });
+                else
+                    res.status(500).send({
+                        success: false,
+                        message: "erro interno",
+                        data: err
+                    });
+            }
             else
                 res.send({
                     success: true,
@@ -52,11 +63,11 @@ exports.post = function (req, res) {
 
     var runner = new Runner(req.body);
     runner.advisor = req.decoded.id;
-    runner.save(function(err, o) {
+    runner.save(function (err, o) {
         if (err && err.code === 11000) {
             res.status(500).send({
                 success: false,
-                message: "telefone duplicado"
+                message: "este telefone já está em uso"
             });
         }
         else if (err) {
@@ -70,8 +81,14 @@ exports.post = function (req, res) {
             smsService.sendSms({
                 number: o.cellphone,
                 message: "Olá corredor! " + req.decoded.name + " está te chamando para correr"
+            }).then(retorno => {
+                console.log("Sucesso");
+                console.log(retorno);
+            }).catch(err => {
+                console.log("Erro");
+                console.log(err);
             });
-            
+
             res.send({
                 success: true,
                 data: o

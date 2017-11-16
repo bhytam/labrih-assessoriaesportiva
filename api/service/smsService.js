@@ -17,14 +17,16 @@ var SmsService = {
             }
         };
 
-        console.log(args);
-
-        soap.createClient('http://54.173.24.177/painel/ServiceSms.asmx?wsdl',
-            function (err, client) {
-                client.SendSMS(args, function (err, result) {
-                    console.log(result);
+        return new Promise(function (sucesso, erro) {
+            soap.createClient('http://54.173.24.177/painel/ServiceSms.asmx?wsdl',
+                function (err, client) {
+                    if (err) erro(err);
+                    client.SendSMS(args, function (err, result) {
+                        if (err) erro(err);
+                        sucesso(sucesso);
+                    });
                 });
-            });
+        });
     }
 }
 
