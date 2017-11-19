@@ -103,3 +103,27 @@ exports.post = function (req, res) {
                 })
     })
 }
+
+exports.myadvisors = function (req, res) {
+    Runner.find({
+        cellphone: req.decoded.cellphone
+    }, {
+        advisor: 1
+    }).populate("advisor", ["name", "cellphone", "email"])
+        .then(list => {
+            res.send({
+                success: true,
+                message: req.decoded.cellphone,
+                data: list.map(o => {
+                    delete o.advisor.password;
+                    return o;
+                })
+            })
+        }).catch(err => {
+            res.status(500).send({
+                success: false,
+                message: "erro interno",
+                data: err
+            })
+        })
+}

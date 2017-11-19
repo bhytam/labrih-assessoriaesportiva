@@ -8,6 +8,7 @@ module.exports = mongoose.model("User", new Schema({
         type: String,
         unique: true
     },
+    cellphone: String,
     password: String,
     created_at: {
         type: Date,

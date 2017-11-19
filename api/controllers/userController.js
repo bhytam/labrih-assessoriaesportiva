@@ -6,7 +6,11 @@ var mongoose = require("mongoose"),
 
 exports.authenticate = function (req, res) {
     User.findOne({
-        email: req.body.email,
+        $or: [{
+            email: req.body.email
+        }, {
+            cellphone: req.body.cellphone
+        }],
         password: req.body.password
     }, function (err, user) {
         if (err) {
@@ -24,7 +28,8 @@ exports.authenticate = function (req, res) {
         else {
             const payload = {
                 id: user._id,
-                name: user.name
+                name: user.name,
+                cellphone: user.cellphone
             };
             const secret = req.app.get('JwtSecret');
 

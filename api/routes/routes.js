@@ -41,4 +41,7 @@ module.exports = function (app) {
 
     app.route('/runners/:runner_id')
         .put(runnerController.put);
+
+    app.route('/runners/advisors')
+        .get(runnerController.myadvisors);
 }

@@ -7,7 +7,7 @@ var runnerSchema = Schema({
     cellphone: String,
     name: String,
     email: String,
-    advisor: Schema.Types.ObjectId,
+    advisor: { type: Schema.Types.ObjectId, ref: "User" },
     created_at: {
         type: Date,
         default: Date.now
