@@ -21,7 +21,6 @@ app.listen(port, function () {
   User.update({},
     { cellphone: "85999981112" },
     function (err, ret) {
-      console.log(err);
       console.log(ret);
     })
 });

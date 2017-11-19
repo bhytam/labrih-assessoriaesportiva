@@ -10,6 +10,7 @@ module.exports = mongoose.model("User", new Schema({
     },
     cellphone: String,
     password: String,
+    cellcode: String,
     created_at: {
         type: Date,
         default: Date.now

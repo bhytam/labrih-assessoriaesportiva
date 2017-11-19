@@ -42,3 +42,55 @@ exports.authenticate = function (req, res) {
     });
 }
 
+exports.newuserfrommobile = function (req, res) {
+    if (!req.body.cellphone || !req.body.cellcode)
+        res.status(401).send({
+            success: false,
+            message: "informe o telefone e o código da instalação"
+        })
+    else
+        User.findOne({
+            cellphone: req.body.cellphone
+        }, function (err, user) {
+            if (err)
+                res.status(500).send({
+                    success: false,
+                    message: "erro interno",
+                    data: err
+                })
+            else
+                if (user && user.cellcode != req.body.cellcode)
+                    res.send({
+                        success: false,
+                        message: "usuário já credenciado"
+                    })
+                else if (user) {
+                    res.send({
+                        success: true,
+                        message: "usuário já vinculado a este telefone",
+                        data: user
+                    })
+                }
+                else {
+                    var newPassword = Math.floor((Math.random() * 9999) + 1000);
+                    var newUser = new User({
+                        cellphone: req.body.cellphone,
+                        password: newPassword,
+                        cellcode: req.body.cellcode
+                    });
+                    newUser.save(function (err, newUser) {
+                        if (err)
+                            res.status(500).send({
+                                success: false,
+                                message: "erro interno",
+                                data: err
+                            })
+                        else
+                            res.send({
+                                success: true,
+                                data: newUser
+                            });
+                    })
+                }
+        });
+}

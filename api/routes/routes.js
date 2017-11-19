@@ -13,6 +13,8 @@ module.exports = function (app) {
 
     app.route("/authenticate").post(userController.authenticate);
 
+    app.route('/runners/frommobile').post(userController.newuserfrommobile);
+
     app.use(function (req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
         if (token) {
