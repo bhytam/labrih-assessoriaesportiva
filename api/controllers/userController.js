@@ -2,7 +2,8 @@
 
 var mongoose = require("mongoose"),
     User = mongoose.model("User"),
-    jwt = require("jsonwebtoken");
+    jwt = require("jsonwebtoken"),
+    smsMessager = require("../service/smsService");
 
 exports.authenticate = function (req, res) {
     User.findOne({
@@ -58,7 +59,11 @@ exports.newuserfrommobile = function (req, res) {
                     message: "erro interno",
                     data: err
                 })
-            else
+            else {
+
+                console.log(req.body.cellphone);
+                console.log(user);
+
                 if (user && user.cellcode != req.body.cellcode)
                     res.send({
                         success: false,
@@ -79,19 +84,31 @@ exports.newuserfrommobile = function (req, res) {
                         cellcode: req.body.cellcode,
                         type: 'runner'
                     });
-                    newUser.save(function (err, newUser) {
-                        if (err)
-                            res.status(500).send({
-                                success: false,
-                                message: "erro interno",
-                                data: err
-                            })
-                        else
-                            res.send({
-                                success: true,
-                                data: newUser
-                            });
+                    smsMessager.sendSms({
+                        number: req.body.cellphone,
+                        message: "Sua senha para o 4T é: " + newPassword
+                    }).then(o => {
+                        newUser.save(function (err, newUser) {
+                            if (err)
+                                res.status(500).send({
+                                    success: false,
+                                    message: "erro interno",
+                                    data: err
+                                })
+                            else
+                                res.send({
+                                    success: true,
+                                    data: newUser
+                                });
+                        })
+                    }).catch(err => {
+                        res.status(500).send({
+                            success: false,
+                            message: "erro interno",
+                            data: err
+                        })
                     })
                 }
+            }
         });
 }

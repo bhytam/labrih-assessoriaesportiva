@@ -18,12 +18,14 @@ var routes = require('./api/routes/routes');
 routes(app);
 
 app.listen(port, function () {
-  User.update({ email: "contato@labrih.com.br" },
-    { cellphone: "85999981112", type: 'advisor' },
-    { multi: true },
-    function (err, ret) {
-      console.log(ret);
-    })
+  User.collection.dropIndexes(function (err, o) {
+    User.update({ email: "contato@labrih.com.br" },
+      { cellphone: "85999981112", type: 'advisor' },
+      { multi: true },
+      function (err, ret) {
+        console.log(ret);
+      })
+  })
 });
 
 console.log(port)
