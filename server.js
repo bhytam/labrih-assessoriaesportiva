@@ -18,19 +18,19 @@ var routes = require('./api/routes/routes');
 routes(app);
 
 app.listen(port, function () {
-  User.findOne({ email: "contato@labrih.com.br" }, function (err, user) {
-    if (!user) {
-      var user = new User({
-        email: "contato@labrih.com.br",
-        password: "contato",
-        name: "Assessoria Labrih"
-      })
-      user.save();
-    } else {
-      user.name = "Assessoria Labrih"
-      user.save();
-    }
-  });
+  // User.findOne({ email: "contato@labrih.com.br" }, function (err, user) {
+  //   if (!user) {
+  //     var user = new User({
+  //       email: "contato@labrih.com.br",
+  //       password: "contato",
+  //       name: "Assessoria Labrih"
+  //     })
+  //     user.save();
+  //   } else {
+  //     user.name = "Assessoria Labrih"
+  //     user.save();
+  //   }
+  // });
 });
 
 console.log(port)

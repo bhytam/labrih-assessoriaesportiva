@@ -56,44 +56,50 @@ exports.put = function (req, res) {
 }
 
 exports.post = function (req, res) {
+
     if (!req.body.cellphone || !req.body.name)
         res.status(401).send({
             success: false,
             message: "informe o telefone e o nome"
         });
 
-    var runner = new Runner(req.body);
-    runner.advisor = req.decoded.id;
-    runner.save(function (err, o) {
-        if (err && err.code === 11000) {
-            res.status(500).send({
-                success: false,
-                message: "este telefone já está em uso"
-            });
-        }
-        else if (err) {
+    Runner.findOne({
+        cellphone: req.body.cellphone,
+        advisor: req.decoded.id
+    }, function (err, runner) {
+        if (err)
             res.status(500).send({
                 success: false,
                 message: "erro interno",
                 data: err
-            });
-        }
-        else {
-            smsService.sendSms({
-                number: o.cellphone,
-                message: "Olá corredor! " + req.decoded.name + " está te chamando para correr"
-            }).then(retorno => {
-                console.log("Sucesso");
-                console.log(retorno);
-            }).catch(err => {
-                console.log("Erro");
-                console.log(err);
-            });
-
-            res.send({
-                success: true,
-                data: o
-            });
-        }
-    });
+            })
+        else
+            if (runner)
+                res.status(401).send({
+                    success: false,
+                    message: "registro já encontrado",
+                    data: runner
+                })
+            else
+                smsService.sendSms({
+                    number: "+55" + req.body.cellphone,
+                    message: "Olá corredor! Estão te chamando para correr em http://www.4tapp.com"
+                }).then(res => {
+                    var runner = new Runner(req.body);
+                    runner.advisor = req.decoded.id;
+                    return runner.save();
+                }).then(runner => {
+                    res.send({
+                        success: true,
+                        message: "Salvo com sucesso",
+                        data: runner
+                    })
+                }).catch(err => {
+                    res.status(500).send({
+                        success: false,
+                        message: "erro interno",
+                        data: err
+                    })
+                })
+    })
 }
