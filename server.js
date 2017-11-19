@@ -18,8 +18,9 @@ var routes = require('./api/routes/routes');
 routes(app);
 
 app.listen(port, function () {
-  User.update({},
-    { cellphone: "85999981112" },
+  User.update({ email: "contato@labrih.com.br" },
+    { cellphone: "85999981112", type: 'advisor' },
+    { multi: true },
     function (err, ret) {
       console.log(ret);
     })

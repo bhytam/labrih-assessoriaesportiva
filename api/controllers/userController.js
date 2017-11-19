@@ -76,7 +76,8 @@ exports.newuserfrommobile = function (req, res) {
                     var newUser = new User({
                         cellphone: req.body.cellphone,
                         password: newPassword,
-                        cellcode: req.body.cellcode
+                        cellcode: req.body.cellcode,
+                        type: 'runner'
                     });
                     newUser.save(function (err, newUser) {
                         if (err)

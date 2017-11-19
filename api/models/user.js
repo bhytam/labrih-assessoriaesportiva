@@ -15,7 +15,10 @@ module.exports = mongoose.model("User", new Schema({
         type: Date,
         default: Date.now
     },
-    name: {
-        type: String
+    name: String,
+    type: {
+        type: ['runner', 'advisor'],
+        default: 'runner'
     }
+
 }));
