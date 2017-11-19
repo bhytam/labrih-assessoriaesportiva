@@ -11,7 +11,8 @@ var runnerSchema = Schema({
     created_at: {
         type: Date,
         default: Date.now
-    }
+    },
+    active: Boolean
 });
 
 runnerSchema.index({ advisor: 1, cellphone: 1 }, { unique: true });

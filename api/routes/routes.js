@@ -46,4 +46,7 @@ module.exports = function (app) {
 
     app.route('/runners/advisors')
         .get(runnerController.myadvisors);
+
+    app.route('/users/becomearunner')
+        .post(userController.becomearunner);
 }

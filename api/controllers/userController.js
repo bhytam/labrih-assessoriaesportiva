@@ -2,6 +2,7 @@
 
 var mongoose = require("mongoose"),
     User = mongoose.model("User"),
+    Runner = mongoose.model("Runner"),
     jwt = require("jsonwebtoken"),
     smsMessager = require("../service/smsService");
 
@@ -60,10 +61,6 @@ exports.newuserfrommobile = function (req, res) {
                     data: err
                 })
             else {
-
-                console.log(req.body.cellphone);
-                console.log(user);
-
                 if (user && user.cellcode != req.body.cellcode)
                     res.send({
                         success: false,
@@ -111,4 +108,38 @@ exports.newuserfrommobile = function (req, res) {
                 }
             }
         });
+}
+
+exports.becomearunner = function (req, res) {
+    Runner.count({
+        advisor: req.body.advisor,
+        cellphone: req.decoded.cellphone
+    }).then(c => { 
+        if (c < 1) //não encontrou a assessoria
+            res.status(401).send({
+                success: false,
+                message: "convite não encontrado",
+                data: req.body
+            })
+        return c;
+    }).then(c => { //atualiza todos os convites como recusados
+        return Runner.update({ cellphone: req.decoded.cellphone }, { active: false });
+    }).then(c => { //atualiza convite certo como aceito
+        return User.update({
+            cellphone: req.decoded.cellphone,
+            advisor: req.body.advisor
+        }, { active: true });
+    }).then(o => {
+        res.send({
+            success: true,
+            message: "atualizado com sucesso",
+            data: o
+        })
+    }).catch(err => {
+        res.status(500).send({
+            success: false,
+            message: "erro interno",
+            data: err
+        })
+    })
 }
