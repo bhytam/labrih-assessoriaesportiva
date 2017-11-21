@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
     jwt = require("jsonwebtoken"),
     smsMessager = require("../service/smsService");
 
-exports.authenticate = function (req, res) {
+exports.authenticate = function (req, res, next) {
     User.findOne({
         $or: [{
             email: req.body.email
@@ -44,7 +44,7 @@ exports.authenticate = function (req, res) {
     });
 }
 
-exports.newuserfrommobile = function (req, res) {
+exports.newuserfrommobile = function (req, res, next) {
     if (!req.body.cellphone || !req.body.cellcode)
         res.status(401).send({
             success: false,
@@ -110,7 +110,7 @@ exports.newuserfrommobile = function (req, res) {
         });
 }
 
-exports.becomearunner = function (req, res) {
+exports.becomearunner = function (req, res, next) {
     Runner.count({
         advisor: req.body.advisor,
         cellphone: req.decoded.cellphone

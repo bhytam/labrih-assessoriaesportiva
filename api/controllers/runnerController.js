@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Runner = mongoose.model('Runner'),
     smsService = require("../service/smsService");
 
-exports.list = function (req, res) {
+exports.list = function (req, res, next) {
     Runner.find({
         advisor: req.decoded.id
     }, function (err, list) {
@@ -22,7 +22,7 @@ exports.list = function (req, res) {
     });
 }
 
-exports.put = function (req, res) {
+exports.put = function (req, res, next) {
     delete req.advisor;
     delete req._id;
     delete req.created_at;
@@ -55,7 +55,7 @@ exports.put = function (req, res) {
         })
 }
 
-exports.post = function (req, res) {
+exports.post = function (req, res, next) {
 
     if (!req.body.cellphone || !req.body.name)
         res.status(401).send({
@@ -104,7 +104,7 @@ exports.post = function (req, res) {
     })
 }
 
-exports.myadvisors = function (req, res) {
+exports.myadvisors = function (req, res, next) {
     Runner.find({
         cellphone: req.decoded.cellphone
     }, {
