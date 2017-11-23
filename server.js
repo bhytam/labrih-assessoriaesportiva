@@ -11,13 +11,25 @@ app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
-var User = require("./api/models/user"),
-  Runner = require("./api/models/runner");
+var Usuario = require("./api/models/usuario");
 
 var routes = require('./api/routes/routes');
 routes(app);
 
 app.listen(port, function () {
+  Usuario.findOne({
+    usuario: 'labrih'
+  }).then(u => {
+    if (!u)
+      return new Usuario({
+        usuario: 'labrih',
+        senha: 'labrih'
+      }).save()
+  }).then(u => {
+    console.log(u);
+  }).catch(err => {
+    console.log(err);
+  })
 });
 
 console.log(port)

@@ -1,6 +1,6 @@
 # Version 1.0.4
 
-* [Novidade] 
+* [Novidade] GET /tamanhocamisas
 
 # Version 1.0.3
 

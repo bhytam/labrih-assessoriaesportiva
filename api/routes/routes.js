@@ -1,10 +1,9 @@
 "use strict";
 
+var mongoose = require('mongoose'),
+    Usuario = mongoose.model("Usuario");
+
 module.exports = function (app) {
-    var userController = require("../controllers/userController"),
-        runnerController = require("../controllers/runnerController"),
-        tamanhoCamisaController = require('../controllers/tamanhoCamisasController'),
-        jwt = require("jsonwebtoken");
 
     app.use(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -16,10 +15,6 @@ module.exports = function (app) {
         else
             next();
     });
-
-    app.route("/authenticate").post(userController.authenticate);
-
-    app.route('/users/frommobile').post(userController.newuserfrommobile);
 
     app.use(function (req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -42,20 +37,4 @@ module.exports = function (app) {
             });
         }
     });
-
-    app.route('/runners')
-        .post(runnerController.post)
-        .get(runnerController.list);
-
-    app.route('/runners/:runner_id')
-        .put(runnerController.put);
-
-    app.route('/runners/advisors')
-        .get(runnerController.myadvisors);
-
-    app.route('/users/becomearunner')
-        .post(userController.becomearunner);
-
-    app.route('/tamanhoCamisas')
-        .get(tamanhoCamisaController.listar);
 }
