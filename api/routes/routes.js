@@ -2,7 +2,8 @@
 
 var mongoose = require('mongoose'),
     Usuario = mongoose.model("Usuario"),
-    jwt = require('jsonwebtoken');
+    jwt = require('jsonwebtoken'),
+    assessoriaController = require('../controllers/assessoriaController');
 
 module.exports = function (app) {
 
@@ -68,4 +69,6 @@ module.exports = function (app) {
             });
         }
     });
+
+    app.route('/assessoria/tamanhoscamisa').get(assessoriaController.listarTamanhosCamisa);
 }

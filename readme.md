@@ -1,6 +1,9 @@
 # Version 1.0.4
 
+* [Novidade] Limpeza das rotas anteriores
+* [Novidade] POST /autenticar passando 'usuario' e 'senha' recebendo 'token'
 * [Novidade] GET /tamanhocamisas
+* 
 
 # Version 1.0.3
 

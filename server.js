@@ -11,7 +11,8 @@ app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
-var Usuario = require("./api/models/usuario");
+var Usuario = require("./api/models/usuario"),
+  Assessoria = require('./api/models/assessoria');
 
 var routes = require('./api/routes/routes');
 routes(app);
@@ -25,8 +26,32 @@ app.listen(port, function () {
         usuario: 'labrih',
         senha: 'labrih'
       }).save()
+    else
+      return u
   }).then(u => {
-    console.log(u);
+    return Assessoria.findOne({
+      usuario: u._id,
+    })
+  }).then(a => {
+    if (!a)
+      return new Assessoria({
+        Nome: u.Nome,
+        Usuario: u._id,
+        tamanhosCamisa: [{
+          Descricao: 'P'
+        }, {
+          Descricao: 'M'
+        }, {
+          Descricao: 'G'
+        }, {
+          Descricao: 'GG'
+        }, {
+          Descricao: 'XG'
+        }]
+      })
+    return a.save()
+  }).then(ret => {
+    console.log(ret);
   }).catch(err => {
     console.log(err);
   })
