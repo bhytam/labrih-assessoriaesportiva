@@ -1,3 +1,7 @@
+# Version 1.0.4
+
+* [Novidade] 
+
 # Version 1.0.3
 
 * [feature] CORS (with OPTIONS for all endpoints) ([#8](i8))

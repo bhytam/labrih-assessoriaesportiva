@@ -3,6 +3,7 @@
 module.exports = function (app) {
     var userController = require("../controllers/userController"),
         runnerController = require("../controllers/runnerController"),
+        tamanhoCamisaController = require('../controllers/tamanhoCamisasController'),
         jwt = require("jsonwebtoken");
 
     app.use(function (req, res, next) {
@@ -54,4 +55,7 @@ module.exports = function (app) {
 
     app.route('/users/becomearunner')
         .post(userController.becomearunner);
+
+    app.route('/tamanhoCamisas')
+        .get(tamanhoCamisaController.listar);
 }
