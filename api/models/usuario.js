@@ -3,7 +3,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 
-module.exports = mongoose.model("User", new Schema({
+module.exports = mongoose.model("Usuario", new Schema({
     usuario: String,
     senha: String
 }));

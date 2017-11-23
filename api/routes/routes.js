@@ -1,7 +1,8 @@
 "use strict";
 
 var mongoose = require('mongoose'),
-    Usuario = mongoose.model("Usuario");
+    Usuario = mongoose.model("Usuario"),
+    jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
 
@@ -15,6 +16,36 @@ module.exports = function (app) {
         else
             next();
     });
+
+    app.route('/autenticar')
+        .post((req, res) => {
+            Usuario.findOne({
+                usuario: req.body.usuario,
+                senha: req.body.senha
+            }).then(u => {
+                if (!u)
+                    res.send(401).send({
+                        success: false,
+                        message: 'usuário não encontrado'
+                    })
+                return u;
+            }).then(u => {
+                const payload = {
+                    usuario: u
+                };
+                var token = jwt.sign(payload, app.get('JwtSecret'), {
+                    expiresIn: 1440 
+                });
+                res.send(token);
+            }).catch(e => {
+                console.log(e);
+                res.status(500).send({
+                    success: false,
+                    message: 'erro interno',
+                    data: e
+                })
+            })
+        })
 
     app.use(function (req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
