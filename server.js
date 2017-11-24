@@ -30,10 +30,10 @@ app.listen(port, function () {
     else
       return u
   }).then(u => {
-    return Assessoria.findOne({
+    return Promise.all([u, Assessoria.findOne({
       usuario: u._id,
-    })
-  }).then(a => {
+    })])
+  }).then((u, a) => {
     if (!a)
       return new Assessoria({
         Nome: u.Nome,
