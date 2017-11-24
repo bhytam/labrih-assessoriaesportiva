@@ -1,64 +1,64 @@
 var mongoose = require('mongoose'),
-    Atleta = mongoose.model('Atleta')
+    Atleta = mongoose.model('Atleta'),
+    Assessoria = mongoose.model('Assessoria');
 
-module.exports = {
-    listar: function (req, res) {
-        Atleta.find({
-            'assessoria.usuario._id': req.decoded.usuario._id
-        }).then(lista => {
-            res.send({
-                success: true,
-                data: lista
-            })
-        }).catch(erro => {
-            res.status(500).send({
-                success: false,
-                message: 'erro interno',
-                data: erro
-            })
+exports.listar = async (req, res) => {
+    try {
+        var assessoriaId = await Assessoria.findOne({usuario: req.decoded.usuario._id}, '_id');
+        var atletas = await Atleta.find({ assessoria: assessoriaId });
+        res.send({
+            success: true,
+            data: atletas
         })
-    },
 
-    novoAtleta: function (req, res) {
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            message: 'erro interno',
+            data: e
+        })
+    }
+}
 
-        new Promise((s, e) => {
-            if (!req.body.cpf || !res.body.numero)
-                res.status(401).send({
-                    success: false,
-                    message: 'cpf e número obrigatórios',
-                    data: req.body
-                })
-            return req.body;
-        }).then(o => {
-            return Atleta.findOne({
-                $or: {
-                    cpf: o.cpf,
-                    numero: o.numero
-                },
-                'assessoria.usuario._id': req.decoded.usuario._id
-            })
-        }).then(atleta => {
-            if (atleta)
-                res.send(401).send({
-                    success: false,
-                    message: 'já existe',
-                    data: atleta
-                });
-            else {
-                atleta = new Atleta(req.body);
-                return atleta.save();
-            }
-        }).then(atletaSalvo => {
-            res.send({
-                success: true,
-                data: atletaSalvo
-            })
-        }).catch(e => {
-            res.status(500).send({
+exports.novoAtleta = async (req, res) => {
+    try {
+        var assessoriaId = await Assessoria.findOne({
+            usuario: req.decoded.usuario._id
+        }, 'usuario');
+
+        var atleta = new Atleta(req.body);
+        atleta.assessoria = assessoriaId;
+
+        var resultadoValidacao = atleta.validateSync();
+        if (resultadoValidacao) {
+            res.status(401).send({
                 success: false,
-                message: 'erro interno',
-                data: e
+                message: 'erro validacao',
+                data: resultadoValidacao
             })
+            return
+        }
+
+        if (await Atleta.count({ cpf: atleta.cpf }) > 0) {
+            res.status(401).send({
+                success: false,
+                message: 'cpf repetido'
+            })
+            return
+        }
+
+        var atletaSalvo = await atleta.save();
+        res.send({
+            success: true,
+            data: atletaSalvo
+        })    
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            message: 'erro interno',
+            data: e
         })
     }
 }

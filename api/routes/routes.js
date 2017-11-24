@@ -79,5 +79,8 @@ module.exports = function (app) {
 
     app.route('/assessoria/tamanhoscamisa').get(assessoriaController.listarTamanhosCamisa);
     app.route('/assessoria/nucleos').get(assessoriaController.listarNucleos);
-    app.route('/assessoria/atletas').get(atletaController.listar);
+    app.route('/assessoria/atletas')
+        .get(atletaController.listar)
+        .post(atletaController.novoAtleta);
+
 }

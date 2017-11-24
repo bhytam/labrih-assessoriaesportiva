@@ -1,3 +1,7 @@
+# Version 1.0.5
+
+* [Novidade] POST /assessoria/atletas (com campos 'celular', 'cpf', 'numero', 'data_nascimento', 'tamanho_camisa', 'nucleo')
+
 # Version 1.0.4
 
 * [Novidade] Limpeza das rotas anteriores
