@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 var Usuario = require("./api/models/usuario"),
-  Assessoria = require('./api/models/assessoria');
+  Assessoria = require('./api/models/assessoria'),
+  Atleta = require('./api/models/atletas');
 
 var routes = require('./api/routes/routes');
 routes(app);

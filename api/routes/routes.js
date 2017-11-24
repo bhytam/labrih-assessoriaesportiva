@@ -3,7 +3,8 @@
 var mongoose = require('mongoose'),
     Usuario = mongoose.model("Usuario"),
     jwt = require('jsonwebtoken'),
-    assessoriaController = require('../controllers/assessoriaController');
+    assessoriaController = require('../controllers/assessoriaController'),
+    atletaController = require('../controllers/atletaController');
 
 module.exports = function (app) {
 
@@ -72,4 +73,5 @@ module.exports = function (app) {
 
     app.route('/assessoria/tamanhoscamisa').get(assessoriaController.listarTamanhosCamisa);
     app.route('/assessoria/nucleos').get(assessoriaController.listarNucleos);
+    app.route('/assessoria/atletas').get(atletaController.listar);
 }

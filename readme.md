@@ -4,6 +4,7 @@
 * [Novidade] POST /autenticar passando 'usuario' e 'senha' recebendo 'token'
 * [Novidade] GET /assessoria/tamanhoscamisa
 * [Novidade] GET /assessoria/nucleos
+* [Novidade] GET /assessoria/atletas
 
 # Version 1.0.3
 
