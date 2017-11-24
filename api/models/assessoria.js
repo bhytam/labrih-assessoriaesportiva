@@ -6,8 +6,13 @@ var TamanhoCamisaSchema = new Schema({
     Descricao: String
 });
 
+var Nucleo = new Schema({
+    Descricao: String
+})
+
 module.exports = mongoose.model("Assessoria", new Schema({
     nome: String,
     usuario: { type: ObjectId, ref: 'Usuario'},
-    tamanhosCamisa: [TamanhoCamisaSchema]
+    tamanhosCamisa: [TamanhoCamisaSchema],
+    nucleos: [Nucleo]
 }))

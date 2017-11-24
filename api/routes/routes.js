@@ -71,4 +71,5 @@ module.exports = function (app) {
     });
 
     app.route('/assessoria/tamanhoscamisa').get(assessoriaController.listarTamanhosCamisa);
+    app.route('/assessoria/nucleos').get(assessoriaController.listarNucleos);
 }

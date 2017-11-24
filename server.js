@@ -50,6 +50,14 @@ app.listen(port, function () {
         }]
       })
     return a.save()
+  }).then(a => {
+    if (a.nucleos.length == 0) {
+      a.nucleos.push({ Descricao: 'Beira Mar'});
+      a.nucleos.push({ Descricao: 'Polar'});
+      a.nucleos.push({ Descricao: 'Crasa'});
+      a.nucleos.push({ Descricao: 'Maraponga'});
+    }
+    return a.save();
   }).then(ret => {
     console.log(ret);
   }).catch(err => {
