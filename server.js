@@ -30,14 +30,18 @@ app.listen(port, function () {
     else
       return u
   }).then(u => {
-    return Promise.all([u, Assessoria.findOne({
+    var assessoriaPromise = Assessoria.findOne({
       usuario: u._id,
-    })])
-  }).then((u, a) => {
+    });
+    return Promise.all([u, assessoriaPromise]);
+  }).then(promisses => {
+    var u = promisses[0];
+    var a = promisses[1];
+
     if (!a)
-      return new Assessoria({
-        Nome: u.Nome,
-        Usuario: u._id,
+      a = new Assessoria({
+        nome: u.usuario,
+        usuario: u._id,
         tamanhosCamisa: [{
           Descricao: 'P'
         }, {
@@ -52,11 +56,13 @@ app.listen(port, function () {
       })
     return a.save()
   }).then(a => {
+    console.log(a.nucleos);
+
     if (a.nucleos.length == 0) {
-      a.nucleos.push({ Descricao: 'Beira Mar'});
-      a.nucleos.push({ Descricao: 'Polar'});
-      a.nucleos.push({ Descricao: 'Crasa'});
-      a.nucleos.push({ Descricao: 'Maraponga'});
+      a.nucleos.push({ Descricao: 'Beira Mar' });
+      a.nucleos.push({ Descricao: 'Polar' });
+      a.nucleos.push({ Descricao: 'Crasa' });
+      a.nucleos.push({ Descricao: 'Maraponga' });
     }
     return a.save();
   }).then(ret => {

@@ -3,6 +3,7 @@ var mongooose = require('mongoose'),
 
 module.exports = {
     listarTamanhosCamisa: function(req, res) {
+
         Assessoria.findOne({ usuario: req.decoded.usuario._id }, 'tamanhosCamisa')
             .then(a => {
                 if (a)
@@ -10,8 +11,6 @@ module.exports = {
                         success: true,
                         data: a.tamanhosCamisa
                     });
-                else 
-                    res.send([]);
             }).catch(e => {
                 return res.send(500).send({
                     success: false,
@@ -30,8 +29,6 @@ module.exports = {
                     success: true,
                     data: a.nucleos
                 })
-            else 
-                res.send([])
         }).catch(e => {
             res.status(500).send({
                 success: false,
