@@ -5,15 +5,18 @@ module.exports = {
     listarTamanhosCamisa: function(req, res) {
         Assessoria.findOne({ usuario: req.decoded.usuario._id }, 'tamanhosCamisa')
             .then(a => {
-                res.send({
-                    success: true,
-                    data: a.tamanhosCamisa
-                });
+                if (a)
+                    res.send({
+                        success: true,
+                        data: a.tamanhosCamisa
+                    });
+                else 
+                    res.send([]);
             }).catch(e => {
-                res.send(500).send({
+                return res.send(500).send({
                     success: false,
                     message: 'erro interno',
-                    data: err
+                    data: e
                 })
             })
     },
@@ -22,10 +25,13 @@ module.exports = {
         Assessoria.findOne({
             usuario: req.decoded.usuario._id
         }, 'nucleos').then(a => {
-            res.send({
-                success: true,
-                data: a.nucleos
-            })
+            if (a)
+                res.send({
+                    success: true,
+                    data: a.nucleos
+                })
+            else 
+                res.send([])
         }).catch(e => {
             res.status(500).send({
                 success: false,
