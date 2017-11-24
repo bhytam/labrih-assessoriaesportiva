@@ -1,6 +1,7 @@
 # Version 1.0.5
 
 * [Novidade] POST /assessoria/atletas (com campos 'celular', 'cpf', 'numero', 'data_nascimento', 'tamanho_camisa', 'nucleo')
+* [Novidade] PUT /assessoria/atletas/:_id (mesmos dados do POST)
 
 # Version 1.0.4
 

@@ -82,5 +82,6 @@ module.exports = function (app) {
     app.route('/assessoria/atletas')
         .get(atletaController.listar)
         .post(atletaController.novoAtleta);
-
+    app.route('/assessoria/atletas/:_id')
+        .put(atletaController.atualizar);
 }

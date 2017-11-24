@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 exports.listar = async (req, res) => {
     try {
-        var assessoriaId = await Assessoria.findOne({usuario: req.decoded.usuario._id}, '_id');
+        var assessoriaId = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
         var atletas = await Atleta.find({ assessoria: assessoriaId });
         res.send({
             success: true,
@@ -51,7 +51,7 @@ exports.novoAtleta = async (req, res) => {
         res.send({
             success: true,
             data: atletaSalvo
-        })    
+        })
 
     } catch (e) {
         console.log(e);
@@ -59,6 +59,48 @@ exports.novoAtleta = async (req, res) => {
             success: false,
             message: 'erro interno',
             data: e
+        })
+    }
+}
+
+exports.atualizar = async (req, res) => {
+    try {
+        var assessoria = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
+        var atleta = await Atleta.findOne({
+            _id: mongoose.Types.ObjectId(req.params._id),
+            assessoria: mongoose.Types.ObjectId(assessoria._id)
+        });
+
+        if (!atleta) {
+            res.status(401).send({
+                success: false,
+                message: 'atleta não encontrado'
+            })
+            return
+        }
+
+        var atleta = Object.assign(atleta, req.body);
+        var validacaoNovoAtleta = atleta.validateSync();
+        if (validacaoNovoAtleta) {
+            res.status(401).send({
+                success: false,
+                message: 'atleta inválido',
+                data: validacaoNovoAtleta
+            });
+            return;
+        }
+
+        await atleta.save();
+        res.send({
+            success: true,
+            data: atleta
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: 'erro interno',
+            data: error
         })
     }
 }
