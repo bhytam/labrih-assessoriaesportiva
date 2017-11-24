@@ -9,5 +9,6 @@ module.exports = mongoose.model('Atleta', new Schema({
     celular: String,
     assessoria: { type: ObjectId, ref: 'Assessoria' },
     tamanhoCamisa: { type: ObjectId, ref: 'Assessoria.tamanhosCamisa' },
-    nucleo: { type: ObjectId, ref: 'Assessoria.nucleos' }
+    nucleo: { type: ObjectId, ref: 'Assessoria.nucleos' },
+    ativo: { type: Boolean, default: true }
 }))
