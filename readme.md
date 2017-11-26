@@ -1,3 +1,7 @@
+# Version 1.0.6
+
+* [Novidade] campo nome no POST/PUT /assessoria/atletas
+
 # Version 1.0.5
 
 * [Novidade] POST /assessoria/atletas (com campos 'celular', 'cpf', 'numero', 'data_nascimento', 'tamanho_camisa', 'nucleo')

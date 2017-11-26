@@ -73,5 +73,9 @@ module.exports = mongoose.model('Atleta', new Schema({
             message: 'nucleo inválido'
         }
     },
-    ativo: { type: Boolean, default: true }
+    ativo: { type: Boolean, default: true },
+    nome: {
+        type: String,
+        required: [true, 'informe o nome']
+    }
 }))
