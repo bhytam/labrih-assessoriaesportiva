@@ -63,6 +63,36 @@ exports.novoAtleta = async (req, res) => {
     }
 }
 
+exports.obter = async (req, res) => {
+    try {
+        var assessoria = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
+        var atleta = await Atleta.findOne({
+            _id: mongoose.Types.ObjectId(req.params._id),
+            assessoria: mongoose.Types.ObjectId(assessoria._id)
+        });
+
+        if (!atleta) {
+            res.status(401).send({
+                success: false,
+                message: 'atleta não encontrado'
+            })
+            return
+        }
+
+        res.send({
+            success: true,
+            data: atleta
+        });
+
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            message: 'erro interno',
+            data: e
+        })
+    }
+}
+
 exports.atualizar = async (req, res) => {
     try {
         var assessoria = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
