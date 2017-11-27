@@ -91,11 +91,7 @@ exports.obter = async (req, res) => {
 
 exports.atualizar = async (req, res) => {
     try {
-        var assessoria = req.decoded.assessoria._id;
-        var atleta = await Atleta.findOne({
-            _id: mongoose.Types.ObjectId(req.params._id),
-            assessoria: mongoose.Types.ObjectId(assessoria._id)
-        });
+        var atleta = await Atleta.findById(req.params._id);
 
         if (!atleta) {
             res.status(401).send({
