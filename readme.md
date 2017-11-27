@@ -1,3 +1,7 @@
+# Version 1.0.7
+
+* [*] Otimizações de código
+
 # Version 1.0.6
 
 * [Novidade] campo nome no POST/PUT /assessoria/atletas

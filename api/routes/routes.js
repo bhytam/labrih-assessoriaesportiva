@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
     assessoriaController = require('../controllers/assessoriaController'),
     atletaController = require('../controllers/atletaController');
 
+var assessoriaService = require('../service/assessoriaService');
+
 module.exports = function (app) {
 
     app.use(function (req, res, next) {
@@ -20,40 +22,41 @@ module.exports = function (app) {
     });
 
     app.route('/autenticar')
-        .post((req, res) => {
-            Usuario.findOne({
-                usuario: req.body.usuario,
-                senha: req.body.senha
-            }).then(u => {
-                if (!u) {
+        .post(async (req, res) => {
+            try {
+                var usuario = await Usuario.findOne({
+                    usuario: req.body.usuario,
+                    senha: req.body.senha
+                });
+
+                if (!usuario) {
                     res.status(401).send({
                         success: false,
                         message: 'usuário não encontrado'
                     })
-                    return undefined;
+                    return;
                 }
-                return u;
-            }).then(u => {
-                if (!u)
-                    return undefined;
-                else {
-                    const payload = {
-                        usuario: u
-                    };
-                    var token = jwt.sign(payload, app.get('JwtSecret'), {
-                        expiresIn: 1440
-                    });
-                    res.send(token);
-                }
-            }).catch(e => {
-                console.log(e);
+
+                var assessoria = await assessoriaService.buscarAssessoriaDoUsuario(usuario._id);
+
+                const payload = {
+                    usuario: usuario,
+                    assessoria: assessoria
+                };
+
+                var token = jwt.sign(payload, app.get('JwtSecret'), {
+                    expiresIn: "1 day"
+                });
+
+                res.send(token);
+            } catch (e) {
                 res.status(500).send({
                     success: false,
                     message: 'erro interno',
                     data: e
                 })
-            })
-        })
+            }
+        });
 
     app.use(function (req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -78,10 +81,13 @@ module.exports = function (app) {
     });
 
     app.route('/assessoria/tamanhoscamisa').get(assessoriaController.listarTamanhosCamisa);
+
     app.route('/assessoria/nucleos').get(assessoriaController.listarNucleos);
+
     app.route('/assessoria/atletas')
         .get(atletaController.listar)
         .post(atletaController.novoAtleta);
+
     app.route('/assessoria/atletas/:_id')
         .put(atletaController.atualizar)
         .get(atletaController.obter);

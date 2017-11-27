@@ -1,11 +1,12 @@
 var mongoose = require('mongoose'),
-    Atleta = mongoose.model('Atleta'),
-    Assessoria = mongoose.model('Assessoria');
+    Atleta = mongoose.model('Atleta');
 
 exports.listar = async (req, res) => {
     try {
-        var assessoriaId = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
+        var assessoriaId = req.decoded.assessoria._id;
+
         var atletas = await Atleta.find({ assessoria: assessoriaId });
+        
         res.send({
             success: true,
             data: atletas
@@ -22,12 +23,8 @@ exports.listar = async (req, res) => {
 
 exports.novoAtleta = async (req, res) => {
     try {
-        var assessoriaId = await Assessoria.findOne({
-            usuario: req.decoded.usuario._id
-        }, 'usuario');
-
         var atleta = new Atleta(req.body);
-        atleta.assessoria = assessoriaId;
+        atleta.assessoria = req.decoded.assessoria._id;
 
         var resultadoValidacao = atleta.validateSync();
         if (resultadoValidacao) {
@@ -65,10 +62,9 @@ exports.novoAtleta = async (req, res) => {
 
 exports.obter = async (req, res) => {
     try {
-        var assessoria = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
         var atleta = await Atleta.findOne({
             _id: mongoose.Types.ObjectId(req.params._id),
-            assessoria: mongoose.Types.ObjectId(assessoria._id)
+            assessoria: req.decoded.assessoria._id
         });
 
         if (!atleta) {
@@ -95,7 +91,7 @@ exports.obter = async (req, res) => {
 
 exports.atualizar = async (req, res) => {
     try {
-        var assessoria = await Assessoria.findOne({ usuario: req.decoded.usuario._id }, '_id');
+        var assessoria = req.decoded.assessoria._id;
         var atleta = await Atleta.findOne({
             _id: mongoose.Types.ObjectId(req.params._id),
             assessoria: mongoose.Types.ObjectId(assessoria._id)
