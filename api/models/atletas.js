@@ -77,5 +77,9 @@ module.exports = mongoose.model('Atleta', new Schema({
     nome: {
         type: String,
         required: [true, 'informe o nome']
+    },
+    email: {
+        type: String,
+        required: [true, 'informe o email']
     }
 }))
