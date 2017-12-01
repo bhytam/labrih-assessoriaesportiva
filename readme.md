@@ -1,3 +1,14 @@
+# Version 1.0.8
+
+* [*] Adição do e-mail do atleta
+
+PUT /assessoria/atletas/5a189056d657e6475fbbcacf HTTP/1.1
+Host: 
+x-access-token: 
+Content-Type: application/x-www-form-urlencoded
+
+email=hlgurgel%40gmail.com
+
 # Version 1.0.7
 
 * [*] Otimizações de código
