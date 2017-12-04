@@ -112,6 +112,14 @@ exports.atualizar = async (req, res) => {
             return;
         }
 
+        if (await Atleta.count({ cpf: atleta.cpf, _id: { "$ne": atleta._id } }) > 0) {
+            res.status(401).send({
+                success: false,
+                message: 'cpf repetido'
+            })
+            return
+        }
+
         await atleta.save();
         res.send({
             success: true,
