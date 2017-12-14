@@ -8,6 +8,10 @@ module.exports = mongoose.model('Atleta', new Schema({
         type: String,
         required: [true, 'Informe o número']
     },
+    rg: {
+        type: String,
+        required: [true, 'Informe o rg']
+    },
     cpf: {
         type: String,
         required: [true, 'Informe do CPF'],
